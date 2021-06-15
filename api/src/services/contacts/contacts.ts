@@ -11,6 +11,10 @@ export const beforeResolver = (rules: BeforeResolverSpecType) => {
   rules.add(requireAuth);
 };
 
+export const contacts = () => {
+  return db.contact.findMany();
+};
+
 const validate = (input: CreateContactInput) => {
   if (input.email && !input.email.match(/[^@]+@[^.]+\..+/)) {
     throw new UserInputError("Can't create new contact", {
@@ -19,10 +23,6 @@ const validate = (input: CreateContactInput) => {
       },
     });
   }
-};
-
-export const contacts = () => {
-  return db.contact.findMany();
 };
 
 export const createContact = ({ input }: MutationCreateContactArgs) => {
