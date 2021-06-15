@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
-const { PrismaClient } = require('@prisma/client')
-const dotenv = require('dotenv')
+const { PrismaClient } = require('@prisma/client');
+const dotenv = require('dotenv');
 
-dotenv.config()
-const db = new PrismaClient()
+dotenv.config();
+const db = new PrismaClient();
 
 /*
  * Seed data is database data that needs to exist for your app to run.
@@ -14,7 +14,7 @@ const db = new PrismaClient()
  * @see https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#createmany
  */
 async function main() {
-  console.warn('Please define your seed data.')
+  console.warn('Please define your seed data.');
 
   // // Change to match your data model and seeding needs
   // const data = [
@@ -39,5 +39,5 @@ async function main() {
 main()
   .catch((e) => console.error(e))
   .finally(async () => {
-    await db.$disconnect()
-  })
+    await db.$disconnect();
+  });
