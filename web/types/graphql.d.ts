@@ -16,6 +16,21 @@ export type Scalars = {
   Time: string;
 };
 
+export type Contact = {
+  __typename?: 'Contact';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  email: Scalars['String'];
+  message: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+};
+
+export type CreateContactInput = {
+  name: Scalars['String'];
+  email: Scalars['String'];
+  message: Scalars['String'];
+};
+
 export type CreatePostInput = {
   title: Scalars['String'];
   body: Scalars['String'];
@@ -27,9 +42,15 @@ export type CreatePostInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createContact?: Maybe<Contact>;
   createPost: Post;
-  updatePost: Post;
   deletePost: Post;
+  updatePost: Post;
+};
+
+
+export type MutationCreateContactArgs = {
+  input: CreateContactInput;
 };
 
 
@@ -38,14 +59,14 @@ export type MutationCreatePostArgs = {
 };
 
 
-export type MutationUpdatePostArgs = {
+export type MutationDeletePostArgs = {
   id: Scalars['Int'];
-  input: UpdatePostInput;
 };
 
 
-export type MutationDeletePostArgs = {
+export type MutationUpdatePostArgs = {
   id: Scalars['Int'];
+  input: UpdatePostInput;
 };
 
 export type Post = {
@@ -58,6 +79,7 @@ export type Post = {
 
 export type Query = {
   __typename?: 'Query';
+  contacts: Array<Contact>;
   post?: Maybe<Post>;
   posts: Array<Post>;
   redwood?: Maybe<Redwood>;
@@ -76,10 +98,29 @@ export type Redwood = {
 };
 
 
+export type UpdateContactInput = {
+  name?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  message?: Maybe<Scalars['String']>;
+};
+
 export type UpdatePostInput = {
   title?: Maybe<Scalars['String']>;
   body?: Maybe<Scalars['String']>;
 };
+
+export type FindBlogPostQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type FindBlogPostQuery = (
+  { __typename?: 'Query' }
+  & { post?: Maybe<(
+    { __typename?: 'Post' }
+    & Pick<Post, 'id' | 'title' | 'body' | 'createdAt'>
+  )> }
+);
 
 export type BlogPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -153,5 +194,18 @@ export type Posts = (
   & { posts: Array<(
     { __typename?: 'Post' }
     & Pick<Post, 'id' | 'title' | 'body' | 'createdAt'>
+  )> }
+);
+
+export type CreateContactMutationVariables = Exact<{
+  input: CreateContactInput;
+}>;
+
+
+export type CreateContactMutation = (
+  { __typename?: 'Mutation' }
+  & { createContact?: Maybe<(
+    { __typename?: 'Contact' }
+    & Pick<Contact, 'id'>
   )> }
 );

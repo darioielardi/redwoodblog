@@ -18,6 +18,21 @@ export type Scalars = {
   Time: string;
 };
 
+export type Contact = {
+  __typename?: 'Contact';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  email: Scalars['String'];
+  message: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+};
+
+export type CreateContactInput = {
+  name: Scalars['String'];
+  email: Scalars['String'];
+  message: Scalars['String'];
+};
+
 export type CreatePostInput = {
   title: Scalars['String'];
   body: Scalars['String'];
@@ -29,9 +44,15 @@ export type CreatePostInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createContact?: Maybe<Contact>;
   createPost: Post;
-  updatePost: Post;
   deletePost: Post;
+  updatePost: Post;
+};
+
+
+export type MutationCreateContactArgs = {
+  input: CreateContactInput;
 };
 
 
@@ -40,14 +61,14 @@ export type MutationCreatePostArgs = {
 };
 
 
-export type MutationUpdatePostArgs = {
+export type MutationDeletePostArgs = {
   id: Scalars['Int'];
-  input: UpdatePostInput;
 };
 
 
-export type MutationDeletePostArgs = {
+export type MutationUpdatePostArgs = {
   id: Scalars['Int'];
+  input: UpdatePostInput;
 };
 
 export type Post = {
@@ -60,6 +81,7 @@ export type Post = {
 
 export type Query = {
   __typename?: 'Query';
+  contacts: Array<Contact>;
   post?: Maybe<Post>;
   posts: Array<Post>;
   redwood?: Maybe<Redwood>;
@@ -77,6 +99,12 @@ export type Redwood = {
   prismaVersion?: Maybe<Scalars['String']>;
 };
 
+
+export type UpdateContactInput = {
+  name?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  message?: Maybe<Scalars['String']>;
+};
 
 export type UpdatePostInput = {
   title?: Maybe<Scalars['String']>;
@@ -161,38 +189,53 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  CreatePostInput: CreatePostInput;
+  Contact: ResolverTypeWrapper<Contact>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  CreateContactInput: CreateContactInput;
+  CreatePostInput: CreatePostInput;
   Date: ResolverTypeWrapper<Scalars['Date']>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   JSON: ResolverTypeWrapper<Scalars['JSON']>;
   JSONObject: ResolverTypeWrapper<Scalars['JSONObject']>;
   Mutation: ResolverTypeWrapper<{}>;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
   Post: ResolverTypeWrapper<Post>;
   Query: ResolverTypeWrapper<{}>;
   Redwood: ResolverTypeWrapper<Redwood>;
   Time: ResolverTypeWrapper<Scalars['Time']>;
+  UpdateContactInput: UpdateContactInput;
   UpdatePostInput: UpdatePostInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  CreatePostInput: CreatePostInput;
+  Contact: Contact;
+  Int: Scalars['Int'];
   String: Scalars['String'];
+  CreateContactInput: CreateContactInput;
+  CreatePostInput: CreatePostInput;
   Date: Scalars['Date'];
   DateTime: Scalars['DateTime'];
   JSON: Scalars['JSON'];
   JSONObject: Scalars['JSONObject'];
   Mutation: {};
-  Int: Scalars['Int'];
   Post: Post;
   Query: {};
   Redwood: Redwood;
   Time: Scalars['Time'];
+  UpdateContactInput: UpdateContactInput;
   UpdatePostInput: UpdatePostInput;
   Boolean: Scalars['Boolean'];
+};
+
+export type ContactResolvers<ContextType = any, ParentType extends ResolversParentTypes['Contact'] = ResolversParentTypes['Contact']> = {
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
@@ -212,9 +255,10 @@ export interface JsonObjectScalarConfig extends GraphQLScalarTypeConfig<Resolver
 }
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  createContact?: Resolver<Maybe<ResolversTypes['Contact']>, ParentType, ContextType, RequireFields<MutationCreateContactArgs, 'input'>>;
   createPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationCreatePostArgs, 'input'>>;
-  updatePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationUpdatePostArgs, 'id' | 'input'>>;
   deletePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationDeletePostArgs, 'id'>>;
+  updatePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationUpdatePostArgs, 'id' | 'input'>>;
 };
 
 export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {
@@ -226,6 +270,7 @@ export type PostResolvers<ContextType = any, ParentType extends ResolversParentT
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  contacts?: Resolver<Array<ResolversTypes['Contact']>, ParentType, ContextType>;
   post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<QueryPostArgs, 'id'>>;
   posts?: Resolver<Array<ResolversTypes['Post']>, ParentType, ContextType>;
   redwood?: Resolver<Maybe<ResolversTypes['Redwood']>, ParentType, ContextType>;
@@ -243,6 +288,7 @@ export interface TimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type Resolvers<ContextType = any> = {
+  Contact?: ContactResolvers<ContextType>;
   Date?: GraphQLScalarType;
   DateTime?: GraphQLScalarType;
   JSON?: GraphQLScalarType;
