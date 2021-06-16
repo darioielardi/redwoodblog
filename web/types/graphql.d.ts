@@ -16,6 +16,16 @@ export type Scalars = {
   Time: string;
 };
 
+export type Comment = {
+  __typename?: 'Comment';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  body: Scalars['String'];
+  post: Post;
+  postId: Scalars['Int'];
+  createdAt: Scalars['DateTime'];
+};
+
 export type Contact = {
   __typename?: 'Contact';
   id: Scalars['Int'];
@@ -23,6 +33,12 @@ export type Contact = {
   email: Scalars['String'];
   message: Scalars['String'];
   createdAt: Scalars['DateTime'];
+};
+
+export type CreateCommentInput = {
+  name: Scalars['String'];
+  body: Scalars['String'];
+  postId: Scalars['Int'];
 };
 
 export type CreateContactInput = {
@@ -79,6 +95,7 @@ export type Post = {
 
 export type Query = {
   __typename?: 'Query';
+  comments: Array<Comment>;
   contacts: Array<Contact>;
   post?: Maybe<Post>;
   posts: Array<Post>;
@@ -97,6 +114,12 @@ export type Redwood = {
   prismaVersion?: Maybe<Scalars['String']>;
 };
 
+
+export type UpdateCommentInput = {
+  name?: Maybe<Scalars['String']>;
+  body?: Maybe<Scalars['String']>;
+  postId?: Maybe<Scalars['Int']>;
+};
 
 export type UpdateContactInput = {
   name?: Maybe<Scalars['String']>;
@@ -130,6 +153,17 @@ export type BlogPostsQuery = (
   & { posts: Array<(
     { __typename?: 'Post' }
     & Pick<Post, 'id' | 'title' | 'body' | 'createdAt'>
+  )> }
+);
+
+export type CommentsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CommentsQuery = (
+  { __typename?: 'Query' }
+  & { comments: Array<(
+    { __typename?: 'Comment' }
+    & Pick<Comment, 'id' | 'name' | 'body' | 'createdAt'>
   )> }
 );
 

@@ -24,10 +24,10 @@ export const Failure = ({ error }: CellFailureProps) => (
 
 export const Success = ({ posts }: CellSuccessProps<Posts>) => {
   return (
-    <>
+    <div className="space-y-10">
       {posts.map((post) => (
-        <BlogPost key={post.id} post={post} />
+        <BlogPost key={post.id} post={post} summary />
       ))}
-    </>
+    </div>
   );
 };

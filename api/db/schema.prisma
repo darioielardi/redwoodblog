@@ -13,6 +13,8 @@ model Post {
   title     String
   body      String
   createdAt DateTime @default(now())
+
+  comments Comment[]
 }
 
 model Contact {
@@ -20,5 +22,14 @@ model Contact {
   name      String
   email     String
   message   String
+  createdAt DateTime @default(now())
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  name      String
+  body      String
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    Int
   createdAt DateTime @default(now())
 }
